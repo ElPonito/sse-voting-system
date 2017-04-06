@@ -1,0 +1,22 @@
+doctype html
+html
+    head
+        title Voting for the world peace
+    body
+        h1 Will "Hello, World!" bring world peace?
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+        <div id="message"></div>
+    script(src="//code.jquery.com/jquery-2.1.4.min.js")
+    script.
+        function vote(vote) {
+            $.get("/vote?vote=" + vote)
+        }
+
+        $("#yes").on("click", function () {
+            vote('yes')
+        })
+
+        $("#no").on("click", function () {
+            vote('no')
+        })

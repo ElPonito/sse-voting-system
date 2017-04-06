@@ -1,0 +1,16 @@
+{
+  "name": "sse-voting-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "jade": "^1.11.0",
+    "nodemon": "^1.11.0"
+  }
+}
