@@ -1,39 +1,32 @@
 const express = require('express')
 const app = express()
-const sse = require('./sse')
+const ServerSentEvents = require('./ServerSentEvents')
 
-const connections = []
+const sse = new ServerSentEvents()
 let votes = {yes: 0, no: 0}
 
 app.engine('jade', require('jade').__express)
 app.set('view engine', 'jade')
 
-app.use(sse)
-
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.render('vote')
 })
 
-app.get('/result', function (req, res) {
+app.get('/result', (req, res) => {
     res.render('result')
 })
 
-app.get('/vote', function (req, res) {
+app.get('/vote', (req, res) => {
     votes[req.query.vote]++
 
-    connections.forEach((connection) => {
-        connection.sseSend(votes)
-    })
-
+    sse.notifyListeners(votes)
     res.sendStatus(200)
 })
 
-app.get('/stream', function (req, res) {
-    res.sseSetup()
-    res.sseSend(votes)
-    connections.push(res)
+app.get('/stream', (req, res) => {
+    sse.addListener(res, votes)
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
     console.log('Listening on port 3000...')
 })
