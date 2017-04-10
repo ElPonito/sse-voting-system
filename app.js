@@ -24,7 +24,7 @@ app.get('/vote', (req, res) => {
 })
 
 app.get('/stream', (req, res) => {
-    sse.addListener(res, votes)
+    sse.addListener(req, res, votes)
 })
 
 app.listen(3000, () => {

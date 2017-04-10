@@ -3,10 +3,16 @@ class ServerSentEvents {
         this.listeners = []
     }
 
-    addListener(res, initialData) {
+    addListener(req, res, initialData) {
         res.sendData = (data) => {
             res.write("data: " + JSON.stringify(data) + "\n\n")
         }
+
+        req.connection.addListener("close", () => {
+            const index = this.listeners.indexOf(res)
+            this.listeners.splice(index, 1)
+        })
+
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
